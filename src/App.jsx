@@ -225,7 +225,7 @@ export default function App() {
                 <CurvedStage key={`st-${rIdx}`} innerRadius={(CONFIG.FIRST_ROW_RADIUS + rIdx * CONFIG.ROW_Z_GAP) - 1.6} outerRadius={(CONFIG.FIRST_ROW_RADIUS + rIdx * CONFIG.ROW_Z_GAP) + 1.6} height={(rIdx + 1) * CONFIG.HEIGHT_STEP} arcAngle={CONFIG.STAGE_ARC} />
               ))}
               {layoutSettings.map((s, i) => (
-                <AnimalCharacter key={`cat-${i}`} modelUrl="/models/character.glb" position={s.position} rotation={s.rotation} notes={s.notes} auraColor={s.color} isPlaying={playback.isPlaying} />
+                <AnimalCharacter key={`cat-${i}`} modelUrl={`${import.meta.env.BASE_URL}models/character.glb`} position={s.position} rotation={s.rotation} notes={s.notes} auraColor={s.color} isPlaying={playback.isPlaying} />
               ))}
             </group>
           </group>
