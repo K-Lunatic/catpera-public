@@ -1,6 +1,7 @@
 # 🏛️ Catpera Symphony
 
-![Catpera Symphony Banner](https://via.placeholder.com/1000x300/020202/ffffff?text=Catpera+Symphony+-+Interactive+3D+Orchestra)
+[공개 체험판](https://k-lunatic.github.io/catpera-public/)에서 **Original Demo → Load → Play** 순서로 예제 MIDI를 재생할 수 있습니다.
+
 
 > **웹 브라우저에서 펼쳐지는 3D 인터랙티브 고양이 교향악단 🎻** > `Tone.js`의 강력한 오디오 엔진과 `Three.js(R3F)`의 3D 렌더링을 결합하여, MIDI 데이터에 맞춰 실시간으로 반응하는 고성능 시청각 시뮬레이터입니다.
 
