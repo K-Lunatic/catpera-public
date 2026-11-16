@@ -3,9 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { SkeletonUtils } from 'three-stdlib';
-import * as Tone from 'tone';
 
-export const AnimalCharacter = ({ modelUrl, position, rotation, notes, auraColor, isPlaying }) => {
+export const AnimalCharacter = ({ modelUrl, position, rotation, notes, auraColor, isPlaying, getCurrentTime }) => {
   const { scene, animations } = useGLTF(modelUrl);
   
   const clone = useMemo(() => {
@@ -45,7 +44,7 @@ export const AnimalCharacter = ({ modelUrl, position, rotation, notes, auraColor
   useFrame((_, delta) => {
     if (!actions || names.length === 0) return;
 
-    const curr = Tone.Transport.seconds;
+    const curr = getCurrentTime();
     let isActive = false;
 
     if (isPlaying && notes && notes.length > 0) {

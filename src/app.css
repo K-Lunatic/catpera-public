@@ -1,0 +1,21 @@
+body { margin: 0; }
+.orchestra {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100dvh;
+  color: #172f3a;
+  background: #e0f2f7;
+  font-family: system-ui, sans-serif;
+}
+.orchestra-stage {
+  position: relative;
+  flex: 1;
+  min-height: 11rem;
+  display: grid;
+  place-items: center;
+}
+.orchestra-stage > p, .orchestra-intro { padding: 0 1rem; text-align: center; }
+.orchestra-intro h1 { margin: 0; font-size: clamp(1.6rem, 6vw, 3rem); }
+.orchestra-intro .btn { min-height: 44px; background: #fff; }
+.orchestra-error { padding: 0 1rem; }

@@ -1,39 +1,25 @@
 import React from 'react';
-import { formatTime } from '../constants';
+import { formatTime } from '../music';
 
 export const ControlPanel = ({ 
   showUI, setShowUI, selectedUrl, setSelectedUrl, 
-  songList, loadMidi, togglePlay, playback, setPlayback 
+  songList, loadMidi, togglePlay, playback, seek, loading
 }) => {
-  const handleRangeChange = (e) => {
-    const t = parseFloat(e.target.value);
-    setPlayback(p => ({ ...p, current: t }));
-    // Tone.Transport.seconds 제어는 부모(App.jsx) 또는 hook에서 처리하도록 의존성 분리
-    if (window.Tone && window.Tone.Transport) {
-        window.Tone.Transport.seconds = t;
-    }
-  };
-
   return (
     <>
       <style>{`
         .control-panel-container {
-          position: absolute;
-          bottom: ${showUI ? '0' : '-150px'};
-          left: 0;
-          width: 100vw;
-          background: rgba(255, 255, 255, 0.85);
-          backdrop-filter: blur(12px);
-          padding: 20px 40px;
+          width: 100%;
+          padding: 14px 24px;
           box-sizing: border-box;
-          border-top: 1px solid rgba(0,0,0,0.1);
-          z-index: 100;
+          background: #fff;
+          border-top: 1px solid #c4d7df;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          gap: 20px;
+          gap: 14px;
         }
+        .control-panel-container[hidden] { display: none; }
         .control-panel-right {
           flex: 1;
           display: flex;
@@ -77,45 +63,38 @@ export const ControlPanel = ({
         /* 모바일 반응형 처리 */
         @media (max-width: 768px) {
           .control-panel-container {
-            flex-direction: column;
-            padding: 15px 20px;
-            align-items: stretch;
-            bottom: ${showUI ? '0' : '-200px'};
-          }
-          .header-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-wrap: wrap;
+            padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+            gap: 8px;
           }
           .control-panel-right {
-            flex-direction: column;
-            align-items: stretch;
-            max-width: 100%;
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+            gap: 8px;
           }
-          .btn-group {
-            display: flex;
-            gap: 10px;
-          }
-          .btn-group button { flex: 1; }
+          .slider-container { flex: 1 1 100%; }
+          .select-box { min-width: 0; }
+          .btn { min-height: 40px; padding-inline: 12px; }
         }
       `}</style>
 
-      <div className="control-panel-container">
+      <div className="control-panel-container" hidden={!showUI}>
         <div className="header-group" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <h1 style={{ margin: 0, fontSize: '18px', color: '#333', fontWeight: '500', letterSpacing: '2px' }}>Catpera</h1>
           <button className="btn" onClick={() => setShowUI(false)} style={{ color: '#666' }}>Hide</button>
         </div>
         
         <div className="control-panel-right">
-          <select className="select-box" value={selectedUrl} onChange={e => setSelectedUrl(e.target.value)}>
+          <select aria-label="MIDI 곡" className="select-box" value={selectedUrl} onChange={e => setSelectedUrl(e.target.value)}>
             {songList.map((s, i) => <option key={i} value={s.url}>{s.name}</option>)}
           </select>
           
           <div className="btn-group">
-            <button className="btn" onClick={loadMidi}>Load</button>
+            <button className="btn" onClick={loadMidi} disabled={loading}>{loading ? "Loading…" : "Load"}</button>
             <button 
               className="btn" 
-              onClick={togglePlay} 
+              onClick={togglePlay}
+              disabled={loading || !playback.duration}
               style={{ background: playback.isPlaying ? 'rgba(0,0,0,0.1)' : '#fff', color: '#333' }}
             >
               {playback.isPlaying ? 'Pause' : 'Play'}
@@ -126,7 +105,9 @@ export const ControlPanel = ({
             <input 
               type="range" min="0" max={playback.duration || 100} step="0.1" 
               value={playback.current} 
-              onChange={handleRangeChange} 
+              aria-label="재생 위치"
+              disabled={loading || !playback.duration}
+              onChange={event => seek(Number(event.target.value))}
               style={{ width: '100%', accentColor: '#a8c6a8', cursor: 'pointer', height: '4px' }} 
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#555', letterSpacing: '1px' }}>
@@ -141,7 +122,7 @@ export const ControlPanel = ({
         <button 
           className="btn" 
           onClick={() => setShowUI(true)} 
-          style={{ position: 'absolute', bottom: '20px', right: '30px', zIndex: 101, background: 'rgba(255,255,255,0.9)' }}
+          style={{ alignSelf: "flex-end", margin: "8px 12px" }}
         >
           Show UI
         </button>
