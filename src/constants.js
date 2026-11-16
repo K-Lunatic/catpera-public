@@ -1,15 +1,8 @@
 import * as THREE from 'three';
 
-export const CONFIG = {
-  STAGE_ARC: 110 * (Math.PI / 180), 
-  CAT_ARC: 80 * (Math.PI / 180),   
-  ROW_Z_GAP: 2.6,                   
-  FIRST_ROW_RADIUS: 9.0,            
-  HEIGHT_STEP: 0.7,                 
-  GRASS_COUNT: 2000,                
-  PEBBLE_COUNT: 30,                  
-  PILLAR_THICKNESS: 2.8, 
-};
+import { CONFIG } from './music';
+
+export { CONFIG };
 
 /**
  * 결정론적 랜덤 함수 (Seeded Random)
@@ -56,15 +49,4 @@ export const MAT = {
   islandGrassTop: new THREE.MeshStandardMaterial({ color: '#b8d4b8', flatShading: true, roughness: 1 }), 
   islandRockSide: new THREE.MeshStandardMaterial({ color: '#c5b59f', flatShading: true, roughness: 1 }), 
   moss: new THREE.MeshStandardMaterial({ color: '#a8c6a8', side: THREE.DoubleSide, alphaTest: 0.5, flatShading: true }), 
-};
-
-export const formatTime = (t) => isNaN(t) ? "00:00" : `${Math.floor(t / 60).toString().padStart(2, '0')}:${Math.floor(t % 60).toString().padStart(2, '0')}`;
-
-export const getTrackInfo = (track) => {
-  if (track.isPercussion) return { color: '#f75b4f', order: 3 }; 
-  const family = (track.instrument?.family || '').toLowerCase();
-  if (['piano', 'string', 'guitar', 'ensemble'].some(k => family.includes(k))) return { color: '#4facf7', order: 1 };
-  if (['brass', 'reed', 'pipe', 'wind'].some(k => family.includes(k))) return { color: '#f7d04f', order: 2 };
-  if (family.includes('bass')) return { color: '#b64ff7', order: 3 };
-  return { color: '#ffffff', order: 4 };
 };
